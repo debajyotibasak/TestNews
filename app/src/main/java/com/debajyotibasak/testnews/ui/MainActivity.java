@@ -5,7 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.debajyotibasak.testnews.R;
@@ -13,8 +14,6 @@ import com.debajyotibasak.testnews.adapter.NewsAdapter;
 import com.debajyotibasak.testnews.di.component.DaggerViewModelFactoryComponent;
 import com.debajyotibasak.testnews.di.component.ViewModelFactoryComponent;
 import com.debajyotibasak.testnews.di.module.api.ContextModule;
-import com.debajyotibasak.testnews.model.NewsArticle;
-import com.debajyotibasak.testnews.model.Status;
 
 import java.util.ArrayList;
 
@@ -26,12 +25,14 @@ public class MainActivity extends AppCompatActivity {
     MainActivityViewModelFactory viewModelFactory;
 
     private RecyclerView mRecylerView;
+    private ProgressBar mProgress;
     private NewsAdapter adapter;
     private MainActivityViewModel mainActivityViewModel;
 
     private void initViews() {
         setContentView(R.layout.activity_main);
         mRecylerView = findViewById(R.id.rv_news);
+        mProgress = findViewById(R.id.progress);
         adapter = new NewsAdapter(new ArrayList<>(), this);
         mRecylerView.setLayoutManager(new LinearLayoutManager(this));
         mRecylerView.setAdapter(adapter);
@@ -53,8 +54,25 @@ public class MainActivity extends AppCompatActivity {
         initData();
 
         mainActivityViewModel.getNewsArticles().observe(this, listResource -> {
-            if (listResource != null && listResource.data != null) {
-                adapter.addItems(listResource.data);
+            if (listResource != null) {
+                switch (listResource.status) {
+                    case SUCCESS:
+                        mProgress.setVisibility(View.GONE);
+                        mRecylerView.setVisibility(View.VISIBLE);
+                        if (listResource.data != null) {
+                            adapter.addItems(listResource.data);
+                        }
+                        break;
+                    case LOADING:
+                        mProgress.setVisibility(View.VISIBLE);
+                        mRecylerView.setVisibility(View.GONE);
+                        break;
+                    case ERROR:
+                        mProgress.setVisibility(View.GONE);
+                        mRecylerView.setVisibility(View.GONE);
+                        Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+                        break;
+                }
             }
         });
 

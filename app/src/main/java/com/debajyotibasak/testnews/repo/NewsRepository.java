@@ -40,14 +40,12 @@ public class NewsRepository {
     }
 
     public synchronized static NewsRepository getInstance(NewsArticleDao newsDao, AppExecutors executors) {
-
         if (sInstance == null) {
             synchronized (LOCK) {
                 sInstance = new NewsRepository(newsDao, executors);
             }
         }
         return sInstance;
-
     }
 
     public LiveData<Resource<List<NewsArticle>>> loadNews() {
