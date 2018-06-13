@@ -14,9 +14,7 @@ import java.util.concurrent.Executors;
 public class AppExecutors {
 
     private final Executor diskIO;
-
     private final Executor networkIO;
-
     private final Executor mainThread;
 
     private static AppExecutors sInstance;
@@ -32,9 +30,7 @@ public class AppExecutors {
     public static AppExecutors getInstance() {
         if (sInstance == null) {
             synchronized (LOCK) {
-                sInstance = new AppExecutors(Executors.newSingleThreadExecutor(),
-                        Executors.newFixedThreadPool(3),
-                        new MainThreadExecutor());
+                sInstance = new AppExecutors(Executors.newSingleThreadExecutor(), Executors.newFixedThreadPool(3), new MainThreadExecutor());
             }
         }
         return sInstance;

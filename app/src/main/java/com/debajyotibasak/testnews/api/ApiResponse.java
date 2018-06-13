@@ -76,6 +76,7 @@ public class ApiResponse<T> {
             errorMessage = message;
             body = null;
         }
+
         String linkHeader = response.headers().get("link");
         if (linkHeader == null) {
             links = Collections.emptyMap();

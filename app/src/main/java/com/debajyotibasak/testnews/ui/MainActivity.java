@@ -24,18 +24,18 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     MainActivityViewModelFactory viewModelFactory;
 
-    private RecyclerView mRecylerView;
+    private RecyclerView mRecyclerView;
     private ProgressBar mProgress;
     private NewsAdapter adapter;
     private MainActivityViewModel mainActivityViewModel;
 
     private void initViews() {
         setContentView(R.layout.activity_main);
-        mRecylerView = findViewById(R.id.rv_news);
+        mRecyclerView = findViewById(R.id.rv_news);
         mProgress = findViewById(R.id.progress);
         adapter = new NewsAdapter(new ArrayList<>(), this);
-        mRecylerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecylerView.setAdapter(adapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setAdapter(adapter);
     }
 
     private void initData() {
@@ -58,18 +58,18 @@ public class MainActivity extends AppCompatActivity {
                 switch (listResource.status) {
                     case SUCCESS:
                         mProgress.setVisibility(View.GONE);
-                        mRecylerView.setVisibility(View.VISIBLE);
+                        mRecyclerView.setVisibility(View.VISIBLE);
                         if (listResource.data != null) {
                             adapter.addItems(listResource.data);
                         }
                         break;
                     case LOADING:
                         mProgress.setVisibility(View.VISIBLE);
-                        mRecylerView.setVisibility(View.GONE);
+                        mRecyclerView.setVisibility(View.GONE);
                         break;
                     case ERROR:
                         mProgress.setVisibility(View.GONE);
-                        mRecylerView.setVisibility(View.GONE);
+                        mRecyclerView.setVisibility(View.GONE);
                         Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
                         break;
                 }

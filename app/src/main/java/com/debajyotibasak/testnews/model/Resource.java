@@ -39,5 +39,4 @@ public class Resource<T> {
         return new Resource<>(LOADING, data, null);
     }
 
-
 }
